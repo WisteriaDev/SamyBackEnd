@@ -4,6 +4,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    win: {
+        type: Number,
+        required: true
+    },
     date: {
         type: Date,
         default: Date.now

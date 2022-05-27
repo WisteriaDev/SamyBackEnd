@@ -11,13 +11,15 @@ router.post('/register', async (req,res) => {
     if (error) return res.status(400).send(error.details[0].message);
 
     const user = new User({
-        username: req.body.username
+        username: req.body.username,
+        win: 0
     });
     try{
         const savedUser = await user.save();
         //create and assign a token
         const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
-        res.header('auth-token', token).send(savedUser);
+        // res.header('auth-token', token).send(savedUser);
+        res.send({'token': token});
     }
     catch(err){
         res.status(400).send(err);
@@ -45,6 +47,23 @@ router.get('/delete', verify, async (req,res) => {
     try{
         await User.deleteOne({_id: req.user});
         res.send({'message': 'User deleted successfully'});
+    } 
+    catch(err){
+        res.status(400).send(err);
+    }
+});
+
+router.get('/info', verify, async (req,res) => {
+    try{
+        await User.findOne({_id: req.user}).select('_id username date win').exec(function (err, user) {
+            if (err) return res.status(400).send(err);
+            res.send({
+                'username': user.username,
+                '_id': user._id,
+                'win': user.win,
+                'date': user.date
+            });
+        });
     } 
     catch(err){
         res.status(400).send(err);

@@ -12,7 +12,9 @@ router.post('/register', async (req,res) => {
 
     const user = new User({
         username: req.body.username,
-        win: 0
+        wins: 0,
+        losses: 0,
+        games: 0,
     });
     try{
         const savedUser = await user.save();
@@ -55,12 +57,14 @@ router.get('/delete', verify, async (req,res) => {
 
 router.get('/info', verify, async (req,res) => {
     try{
-        await User.findOne({_id: req.user}).select('_id username date win').exec(function (err, user) {
+        await User.findOne({_id: req.user}).select('username wins losses games _id date').exec(function (err, user) {
             if (err) return res.status(400).send(err);
             res.send({
                 'username': user.username,
+                'wins': user.wins,
+                'losses': user.losses,
+                'games': user.games,
                 '_id': user._id,
-                'win': user.win,
                 'date': user.date
             });
         });

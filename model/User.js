@@ -4,7 +4,15 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    win: {
+    wins: {
+        type: Number,
+        required: true
+    },
+    losses: {
+        type: Number,
+        required: true
+    },
+    games: {
         type: Number,
         required: true
     },

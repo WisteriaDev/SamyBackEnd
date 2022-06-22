@@ -5,6 +5,7 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 //import routes
 const userRoutes = require('./routes/userRoutes');
+const gameRoutes = require('./routes/gameRoutes');
 
 dotenv.config();
 
@@ -21,5 +22,6 @@ app.use(cors());
 
 //route middlewares
 app.use('/api/user', userRoutes);
+app.use('/api/game', gameRoutes);
 
 app.listen(3000, () => console.log("Server up and running"));

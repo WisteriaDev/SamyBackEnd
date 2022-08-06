@@ -3,7 +3,6 @@ const User = require('../model/User');
 const jwt = require('jsonwebtoken');
 const verify = require('./verifyToken');
 const {registerValidation} = require('../validation');
-const { updateOne } = require('../model/User');
 
 router.post('/register', async (req,res) => {
     //validation
@@ -17,7 +16,7 @@ router.post('/register', async (req,res) => {
         games: 0,
     });
     try{
-        const savedUser = await user.save();
+        await user.save();
         //create and assign a token
         const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
         // res.header('auth-token', token).send(savedUser);

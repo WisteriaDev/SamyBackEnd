@@ -1,15 +1,14 @@
 const router = require('express').Router();
 const Room = require('../model/Room');
-const jwt = require('jsonwebtoken');
 const verify = require('./verifyToken');
-const {registerValidation} = require('../validation');
 
-router.get('/newRoom', verify, async (req,res) => {
+router.get('/create', verify, async (req,res) => {
     const codepin = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000;
     const room = new Room({
         creator: req.user,
         rule: 200,
-        state: open,
+        open: true,
+        players: [], 
         pin: codepin
     });
 
@@ -23,6 +22,5 @@ router.get('/newRoom', verify, async (req,res) => {
         res.status(400).send(err);
     }
 });
-
 
 module.exports = router;

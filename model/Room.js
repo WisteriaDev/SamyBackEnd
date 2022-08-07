@@ -12,8 +12,8 @@ const roomSchema = new mongoose.Schema({
     rule: {
         type: Number
     },
-    state: {
-        type: String
+    open: {
+        type: Boolean
     },
     date: {
         type: Date,

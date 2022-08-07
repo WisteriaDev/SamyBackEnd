@@ -9,7 +9,6 @@ router.get('/create', verify, async (req,res) => {
         creator: req.user,
         rule: 200,
         open: true,
-        // players: [], 
         pin: codepin
     });
 
@@ -33,7 +32,12 @@ router.post('/join', verify, async (req,res) => {
                 players: {id: req.user._id, username: username.username, points: 0, dice:1, multiplier: 1}
             }},
         );
-        res.send({'message': `Successful joining for ${req.body.pin}`});
+
+        if(await Room.find({pin: req.body.pin}).count() == 1){
+            res.send({'message': `Successful joining for ${req.body.pin}`});
+        } else {
+            res.send({'message': `Failed joining for ${req.body.pin}`});
+        }
     } 
     catch(err){
         res.status(400).send(err);

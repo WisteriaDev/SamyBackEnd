@@ -25,18 +25,20 @@ router.get('/create', verify, async (req,res) => {
 
 router.post('/join', verify, async (req,res) => {
     const username = await User.findOne({_id: req.user}).select('username');
-    try{
-        await Room.updateOne(
-            {pin: req.body.pin},
-            { $push: {
-                players: {id: req.user._id, username: username.username, points: 0, dice:1, multiplier: 1}
-            }},
-        );
 
-        if(await Room.find({pin: req.body.pin}).count() == 1){
+    try{
+        const openstatus = await Room.findOne({pin: req.body.pin}).select('open');
+
+        if(await Room.findOne({pin: req.body.pin}).count() == 1 && openstatus.open === true) {
+            await Room.updateOne(
+                {pin: req.body.pin},
+                { $push: {
+                    players: {id: req.user._id, username: username.username, points: 0, dice:1, multiplier: 1}
+                }},
+            );
             res.send({'message': `Successful joining for ${req.body.pin}`});
         } else {
-            res.send({'message': `Failed joining for ${req.body.pin}`});
+            res.send({'error': `Failed joining ${req.body.pin}, room closed or doesn't exist`});
         }
     } 
     catch(err){
@@ -44,7 +46,8 @@ router.post('/join', verify, async (req,res) => {
     }
 });
 
+// router.get('/update', verify, async (req,res) => {
+    
+// });
+
 module.exports = router;
-
-
-

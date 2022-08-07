@@ -46,8 +46,16 @@ router.post('/join', verify, async (req,res) => {
     }
 });
 
-// router.get('/update', verify, async (req,res) => {
-    
-// });
+router.get('/info', verify, async (req,res) => {
+    try{
+        await Room.findOne({}).where('id').equals(req.user._id).exec(function (err, room) {
+            if (err) return res.status(400).send(err);
+            res.send(room);
+        });
+    }
+    catch(err){
+        res.status(400).send(err);
+    }
+});
 
 module.exports = router;

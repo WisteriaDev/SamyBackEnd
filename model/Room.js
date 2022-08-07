@@ -6,14 +6,14 @@ const roomSchema = new mongoose.Schema({
     creator: {
         type: String
     },
-    players: {
-        type: Array
-    },
     rule: {
         type: Number
     },
     open: {
         type: Boolean
+    },
+    players: {
+        type: Array
     },
     date: {
         type: Date,

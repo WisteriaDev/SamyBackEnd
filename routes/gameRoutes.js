@@ -47,11 +47,12 @@ router.post('/join', verify, async (req,res) => {
 });
 
 router.get('/info', verify, async (req,res) => {
+    const stringID = req.user._id.toString();
     try{
-        await Room.findOne({}).where('id').equals(req.user._id).exec(function (err, room) {
-            if (err) return res.status(400).send(err);
-            res.send(room);
-        });
+    await Room.findOne({'players.id': stringID}).select('_id pin creator rule open players date').exec(function (err, room) {
+        if (err) return res.status(400).send(err);
+        res.send(room);
+    });
     }
     catch(err){
         res.status(400).send(err);

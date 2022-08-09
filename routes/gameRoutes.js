@@ -47,12 +47,21 @@ router.post('/join', verify, async (req,res) => {
 });
 
 router.get('/info', verify, async (req,res) => {
-    const stringID = req.user._id.toString();
     try{
-    await Room.findOne({'players.id': stringID}).select('_id pin creator rule open players date').exec(function (err, room) {
-        if (err) return res.status(400).send(err);
-        res.send(room);
-    });
+        await Room.findOne({'players.id': req.user._id}).select('_id pin creator rule open players date').exec(function (err, room) {
+            if (err) return res.status(400).send(err);
+            res.send(room);
+        });
+    }
+    catch(err){
+        res.status(400).send(err);
+    }
+});
+
+router.post('/newEntry', verify, async (req,res) => {
+    try{
+        await Room.updateOne({'players.id': req.user._id}, {$inc: {"players.$.points" : req.body.entry}});
+        res.send('succes');
     }
     catch(err){
         res.status(400).send(err);

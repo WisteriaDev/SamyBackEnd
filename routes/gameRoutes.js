@@ -29,7 +29,6 @@ router.post('/join', verify, async (req,res) => {
 
     try{
         const openstatus = await Room.findOne({pin: req.body.pin}).select('open');
-        const a = req.user+"";
 
 
 
@@ -74,11 +73,10 @@ router.get('/info', verify, async (req,res) => {
 
 router.post('/newEntry', verify, async (req,res) => {
     try{
-        //eror recup first player of the room
-        await Room.findOne({'players.id': req.user._id}).select('players').exec(async function(err, myDoc) {
+        await Room.findOne({'players.id': req.user._id, 'open': true}).select('players.$').exec(async function(err, myDoc) {
             if (err) return res.status(400).send(err);
             var multiplier = myDoc.players[0].multiplier;
-            console.log(multiplier);
+            console.log(multiplier);        
 
             //increment new throw with id times multiplier variable
             await Room.updateOne({'players.id': req.user._id}, {$inc: {"players.$.points" : req.body.entry*multiplier}});
@@ -91,29 +89,3 @@ router.post('/newEntry', verify, async (req,res) => {
 });
 
 module.exports = router;
-
-
-
-
-// router.post('/join', verify, async (req,res) => {
-//     const username = await User.findOne({_id: req.user}).select('username');
-
-//     try{
-//         const openstatus = await Room.findOne({pin: req.body.pin}).select('open');
-
-//         if(await Room.findOne({pin: req.body.pin}).count() == 1 && openstatus.open === true) {
-//             await Room.updateOne(
-//                 {pin: req.body.pin},
-//                 { $push: {
-//                     players: {id: req.user._id, username: username.username, points: 0, dice:1, multiplier: 1}
-//                 }},
-//             );
-//             res.send({'message': `Successful joining for ${req.body.pin}`});
-//         } else {
-//             res.send({'error': `Failed joining ${req.body.pin}, room closed or doesn't exist`});
-//         }
-//     } 
-//     catch(err){
-//         res.status(400).send(err);
-//     }
-// });

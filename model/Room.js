@@ -13,7 +13,7 @@ const roomSchema = new mongoose.Schema({
         type: Boolean
     },
     players: {
-        type: Object
+        type: Array
     },
     date: {
         type: Date,

@@ -1,0 +1,42 @@
+{
+    "dice": [
+        {
+            "value": 1,
+            "price": 0
+        },
+        {
+            "value": 2,
+            "price": 10
+        },
+        {
+            "value": 3,
+            "price": 20
+        },
+        {
+            "value": 4,
+            "price": 30
+        },
+        {
+            "value": 5,
+            "price": 40
+        }
+    ],
+    "multiplier": [
+        {
+            "value": 1,
+            "price": 0
+        },
+        {
+            "value": 2,
+            "price": 15
+        },
+        {
+            "value": 3,
+            "price": 50
+        },
+        {
+            "value": 4,
+            "price": 100
+        }
+    ]
+}

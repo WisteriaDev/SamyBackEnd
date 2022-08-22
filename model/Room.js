@@ -15,6 +15,9 @@ const roomSchema = new mongoose.Schema({
     players: {
         type: Array
     },
+    winner: {
+        type: String
+    },
     date: {
         type: Date,
         default: Date.now
